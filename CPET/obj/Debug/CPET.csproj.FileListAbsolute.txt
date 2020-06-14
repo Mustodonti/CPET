@@ -1,0 +1,14 @@
+C:\Users\Йонас\source\repos\CPET\CPET\obj\Debug\CPET.csprojAssemblyReference.cache
+C:\Users\Йонас\source\repos\CPET\CPET\obj\Debug\MainWindow.g.cs
+C:\Users\Йонас\source\repos\CPET\CPET\obj\Debug\App.g.cs
+C:\Users\Йонас\source\repos\CPET\CPET\obj\Debug\CPET_MarkupCompile.cache
+C:\Users\Йонас\source\repos\CPET\CPET\obj\Debug\CPET_MarkupCompile.lref
+C:\Users\Йонас\source\repos\CPET\CPET\bin\Debug\CPET.exe.config
+C:\Users\Йонас\source\repos\CPET\CPET\bin\Debug\CPET.exe
+C:\Users\Йонас\source\repos\CPET\CPET\bin\Debug\CPET.pdb
+C:\Users\Йонас\source\repos\CPET\CPET\obj\Debug\MainWindow.baml
+C:\Users\Йонас\source\repos\CPET\CPET\obj\Debug\CPET.g.resources
+C:\Users\Йонас\source\repos\CPET\CPET\obj\Debug\CPET.Properties.Resources.resources
+C:\Users\Йонас\source\repos\CPET\CPET\obj\Debug\CPET.csproj.GenerateResource.cache
+C:\Users\Йонас\source\repos\CPET\CPET\obj\Debug\CPET.exe
+C:\Users\Йонас\source\repos\CPET\CPET\obj\Debug\CPET.pdb

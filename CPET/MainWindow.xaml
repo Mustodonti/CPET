@@ -1,0 +1,648 @@
+﻿<Window x:Class="CPET.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CPET"
+        xmlns:wfi="clr-namespace:System.Windows.Forms.Integration;assembly=WindowsFormsIntegration"
+        xmlns:wf="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
+        xmlns:dvc="clr-namespace:System.Windows.Forms.DataVisualization.Charting;assembly=System.Windows.Forms.DataVisualization"
+        mc:Ignorable="d"
+        Title="Подсчет значений" Height="1000" Width="1900" >
+    <!--<Window.Resources>
+        <local:loopVolumeFlow x:Key="Resp"  >
+        </local:loopVolumeFlow>
+    </Window.Resources>-->
+    <TabControl >
+        <TabItem Header="Step_1_Calculations"  IsSelected="True">
+            <ScrollViewer>
+                <Grid >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1000"/>
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Orientation="Vertical" Grid.Column="0" Cursor="Hand"  >
+                        <TextBlock
+                       Foreground="Red"
+                       FontStyle="Italic"
+                       FontFamily="TimesNewRoman"
+                       FontSize="20"
+                       Text="Стартуем"
+                       Margin="0,10,0,0"
+                       HorizontalAlignment="Center"
+                />
+                        <Button 
+                    Content="Подсчет"
+                    Click="V_Start" 
+                    />
+                        <DataGrid ItemsSource="{Binding Calculations_MF}" AutoGenerateColumns="False" >
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Текущее Время" Binding="{Binding  _T,StringFormat='Время : {0}'}" />
+                                <DataGridTextColumn Header="Статус" Binding="{Binding  _Status,StringFormat='Этап : {0}'}" />
+                                <DataGridTextColumn Header="Мгновенное &#10;значение V(t) &#10;[Л/С]" Binding="{Binding  _DataFlow}" />
+                                <DataGridTextColumn Header="Мгновенное &#10;предыдущие &#10;значение V(t) &#10;[Л/С]" Binding="{Binding  _kDataFlow}" />
+                                <DataGridTextColumn Header="Flowins" Binding="{Binding _Flowins}" />
+                                <DataGridTextColumn Header="Flowexp" Binding="{Binding _Flowexp}" />
+                                <DataGridTextColumn Header="O2ins" Binding="{Binding _O2ins}" />
+                                <DataGridTextColumn Header="O2exp" Binding="{Binding _O2exp}" />
+                                <DataGridTextColumn Header="VO2ins" Binding="{Binding _VO2ins}" />
+                                <DataGridTextColumn Header="VO2exp" Binding="{Binding _VO2exp}" />
+                                <DataGridTextColumn Header="CO2ins" Binding="{Binding _CO2ins}" />
+                                <DataGridTextColumn Header="CO2exp" Binding="{Binding _CO2exp}" />
+                                <DataGridTextColumn Header="VCO2ins" Binding="{Binding _VCO2ins}" />
+                                <DataGridTextColumn Header="VCO2exp" Binding="{Binding _VCO2exp}" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <Grid Grid.Column="0" >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="250"/>
+                                <ColumnDefinition Width="250"/>
+                                <ColumnDefinition Width="250"/>
+                                <ColumnDefinition Width="400"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock
+                        Grid.Column="0"
+                        MinHeight="600"
+                        x:Name="FlowText"
+                        FontSize="10"
+                     />
+                            <TextBlock
+                        Grid.Column="1"
+                        MinHeight="600"
+                        x:Name="O2Text"
+                        FontSize="10"
+                    />
+                            <TextBlock
+                        Grid.Column="2"
+                        MinHeight="600"
+                        x:Name="CO2Text"
+                        FontSize="10"
+                     />
+                            <TextBlock
+                        Grid.Column="3"
+                        MinHeight="600"
+                        x:Name="TestText"
+                        FontSize="10"
+                    />
+                            <TextBlock
+                        Grid.Column="0"
+                        Grid.Row="1"
+                        MinHeight="600"
+                        x:Name="VO2Text"
+                        FontSize="10"
+                        />
+                            <TextBlock
+                        Grid.Column="1"
+                        Grid.Row="1"
+                        MinHeight="600"
+                        x:Name="VCO2Text"
+                        FontSize="10"
+                        />
+                            <TextBlock
+                        Grid.Column="2"
+                        Grid.Row="1"
+                        MinHeight="600"
+                        x:Name="DerivateText"
+                        FontSize="10"
+                        />
+                            <TextBlock
+                        Grid.Column="3"
+                        Grid.Row="1"
+                        MinHeight="600"
+                        x:Name="CalculationsText"
+                        FontSize="10"
+                        />
+                            <TextBlock
+                        Grid.Column="0"
+                        Grid.Row="2"
+                        MinHeight="600"
+                        x:Name="VexpVinsText"
+                        FontSize="10"
+                        />
+                            <TextBlock
+                        Grid.Column="1"
+                        Grid.Row="2"
+                        MinHeight="600"
+                        x:Name="FlowDATAText"
+                        FontSize="10"
+                        />
+                            <TextBlock
+                        Grid.Column="2"
+                        Grid.Row="2"
+                        MinHeight="600"
+                        x:Name="O2DATAText"
+                        FontSize="10"
+                        />
+                            <TextBlock
+                        Grid.Column="3"
+                        Grid.Row="2"
+                        MinHeight="600"
+                        x:Name="CO2DATAText"
+                        FontSize="10"
+                        />
+                        </Grid>
+                        <TextBlock
+                    Grid.Column="1"
+                    Background="Black"
+                    />
+
+                    </StackPanel>
+                    <StackPanel Grid.Column="2">
+                        <WindowsFormsHost   >
+                            <dvc:Chart x:Name="FlowVolumeLoop" Height="500" Width="500"  />
+                        </WindowsFormsHost>
+                        <!--<WindowsFormsHost Grid.Column="2"  >
+                            <dvc:Chart x:Name="ExampleCO2_VD" Height="300" Width="1500" />
+                        </WindowsFormsHost>-->
+                        <WindowsFormsHost Grid.Column="2"  >
+                            <dvc:Chart x:Name="chart" Height="1000" Width="1500" />
+                        </WindowsFormsHost>
+                        <DataGrid ItemsSource="{Binding Calculations_M}" AutoGenerateColumns="False" >
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Время" Binding="{Binding  _T2,StringFormat='Время: {0}'}" />
+                                <DataGridTextColumn Header="Цикл дыхания" Binding="{Binding  _bN}" />
+                                <DataGridTextColumn Header="VT [Л]" Binding="{Binding _VT}" />
+                                <DataGridTextColumn Header="VE [Л/Мин]" Binding="{Binding _VE}" />
+                                <DataGridTextColumn Header="VO2 [Л/Мин]" Binding="{Binding _VO2}" />
+                                <DataGridTextColumn Header="VCO2 [Л/Мин]" Binding="{Binding _VCO2}" />
+                                <DataGridTextColumn Header="FETO2 [Vol.%]" Binding="{Binding _FETO2}" />
+                                <DataGridTextColumn Header="FITO2 [Vol.%]" Binding="{Binding _FITO2}" />
+                                <DataGridTextColumn Header="FETCO2 [Vol.%]" Binding="{Binding _FETCO2}" />
+                                <DataGridTextColumn Header="FITCO2 [Vol.%]" Binding="{Binding _FITCO2}" />
+                                <DataGridTextColumn Header="BF [Дых/Мин]" Binding="{Binding _BF}" />
+                                <DataGridTextColumn Header="RER" Binding="{Binding _RER}" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+
+                    </StackPanel>
+                </Grid>
+            </ScrollViewer>
+        </TabItem>
+        <TabItem Header="Step_2_Interface" >
+            <ScrollViewer>
+                <WrapPanel>
+                    <StackPanel>
+                        <TextBlock
+                               Foreground="Black"
+                               FontStyle="Italic"
+                               FontFamily="TimesNewRoman"
+                               FontSize="20"
+                               Text="VO2 vs VCO2"
+                               Margin="0,10,0,0"
+                               HorizontalAlignment="Center"
+                                />
+                        <WindowsFormsHost   >
+                            <dvc:Chart x:Name="VO2_VCO2" Height="500" Width="500"  />
+                        </WindowsFormsHost>
+                    </StackPanel>
+                    <StackPanel>
+                        <TextBlock
+                               Foreground="Black"
+                               FontStyle="Italic"
+                               FontFamily="TimesNewRoman"
+                               FontSize="20"
+                               Text="EQO2 vs EQCO2"
+                               Margin="0,10,0,0"
+                               HorizontalAlignment="Center"
+                                />
+                        <WindowsFormsHost   >
+                            <dvc:Chart x:Name="EQO2_EQCO2" Height="500" Width="500"  />
+                        </WindowsFormsHost>
+                    </StackPanel>
+                    <StackPanel>
+                        <TextBlock
+                               Foreground="Black"
+                               FontStyle="Italic"
+                               FontFamily="TimesNewRoman"
+                               FontSize="20"
+                               Text="LOOP : Flow - Volume"
+                               Margin="0,10,0,0"
+                               HorizontalAlignment="Center"
+                                />
+                        <!--<WindowsFormsHost   >
+                            <dvc:Chart x:Name="FlowVolumeLoop" Height="500" Width="500"  />
+                        </WindowsFormsHost>-->
+                    </StackPanel>
+                    <StackPanel>
+                        <TextBlock
+                               Foreground="Black"
+                               FontStyle="Italic"
+                               FontFamily="TimesNewRoman"
+                               FontSize="20"
+                               Text="VE vs W"
+                               Margin="0,10,0,0"
+                               HorizontalAlignment="Center"
+                                />
+                        <WindowsFormsHost   >
+                            <dvc:Chart x:Name="VE_W" Height="500" Width="500"  />
+                        </WindowsFormsHost>
+                    </StackPanel>
+                    <StackPanel>
+                        <TextBlock
+                               Foreground="Black"
+                               FontStyle="Italic"
+                               FontFamily="TimesNewRoman"
+                               FontSize="20"
+                               Text="FETO2 vs FETCO2"
+                               Margin="0,10,0,0"
+                               HorizontalAlignment="Center"
+                                />
+                        <WindowsFormsHost   >
+                            <dvc:Chart x:Name="FETO2_FETCO2" Height="500" Width="500"  />
+                        </WindowsFormsHost>
+                    </StackPanel>
+                    <TabControl>
+                        <TabItem Header="Вычисления для по газу" IsSelected="True" >
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="400"/>
+                                    <ColumnDefinition Width="400"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock
+                                Grid.ColumnSpan="2"
+                                Grid.Row="0"
+                               Foreground="Black"
+                               FontStyle="Italic"
+                               FontFamily="TimesNewRoman"
+                               FontSize="20"
+                               Text="Calculations"
+                               Margin="0,10,0,0"
+                               HorizontalAlignment="Center"
+                                />
+                                <StackPanel Grid.Row="1" Grid.Column="0">
+                                    <TextBox FontSize="20" IsReadOnly="True" Name="VEBOX" />
+                                    <TextBox FontSize="20" IsReadOnly="True" Name="VABOX" />
+                                    <TextBox FontSize="20" IsReadOnly="True" Name="VDBOX" />
+                                    <TextBox FontSize="20" IsReadOnly="True" Name="VO2BOX" />
+                                    <TextBox FontSize="20" IsReadOnly="True" Name="VCO2BOX" />
+                                    <TextBox FontSize="20" IsReadOnly="True" Name="VO2_HTBOX" />
+                                    <TextBox FontSize="20" IsReadOnly="True" Name="VCO2_HTBOX" />
+                                    <TextBox FontSize="20" IsReadOnly="True" Name="VO2_ETBOX" />
+                                    <TextBox FontSize="20" IsReadOnly="True" Name="VCO2_ETBOX" />
+                                    <!--<TextBox FontSize="20" IsReadOnly="True" Name="VO2predBOX" />-->
+                                </StackPanel>
+                                <StackPanel Grid.Row="1" Grid.Column="1">
+                                    <TextBox FontSize="20" IsReadOnly="True" Name="FETO2BOX"/>
+                                    <TextBox FontSize="20" IsReadOnly="True" Name="FETCO2BOX"/>
+                                    <TextBox FontSize="20" IsReadOnly="True" Name="FITO2BOX"/>
+                                    <TextBox FontSize="20" IsReadOnly="True" Name="FITCO2BOX"/>
+                                    <TextBox FontSize="20" IsReadOnly="True" Name="PAO2BOX"/>
+                                    <TextBox FontSize="20" IsReadOnly="True" Name="PACO2BOX"/>
+                                    <!--<TextBox FontSize="20" IsReadOnly="True" Name="PaO2BOX"/>-->
+                                    <TextBox FontSize="20" IsReadOnly="True" Name="PaCO2BOX"/>
+                                    <TextBox FontSize="20" IsReadOnly="True" Name="PECO2BOX"/>
+                                    <!--<TextBox FontSize="20" IsReadOnly="True" Name="Aa_DO2BOX"/>-->
+                                    <!--<TextBox FontSize="20" IsReadOnly="True" Name="aET_DCO2BOX"/>-->
+                                    <!--<TextBox FontSize="20" IsReadOnly="True" Name="DLO2BOX"/>-->
+                                </StackPanel>
+                                <StackPanel Grid.Row="2" Grid.Column="0">
+                                    <TextBox FontSize="20" IsReadOnly="True" Name="RERBOX" />
+                                    <TextBox FontSize="20" IsReadOnly="True" Name="EQO2BOX" />
+                                    <TextBox FontSize="20" IsReadOnly="True" Name="EQCO2BOX"/>
+                                    <TextBox FontSize="20" IsReadOnly="True" Name="METSBOX"/>
+                                </StackPanel>
+                                <StackPanel Grid.Row="2" Grid.Column="1">
+                                    <TextBox FontSize="20" IsReadOnly="True" Name="BRBOX"/>
+                                    <TextBox FontSize="20" IsReadOnly="True" Name="TimeBOX"/>
+                                </StackPanel>
+                            </Grid>
+                        </TabItem>
+                        <TabItem Header="Спирометрические вычисления" >
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="400"/>
+                                    <ColumnDefinition Width="400"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock
+                                Grid.ColumnSpan="2"
+                                Grid.Row="0"
+                               Foreground="Black"
+                               FontStyle="Italic"
+                               FontFamily="TimesNewRoman"
+                               FontSize="20"
+                               Text="Calculations"
+                               Margin="0,10,0,0"
+                               HorizontalAlignment="Center"
+                                />
+                                <StackPanel Grid.Row="0" Grid.Column="0" >
+                                    <TextBox FontSize="20" IsReadOnly="True" Name="FEV05BOX" />
+                                    <TextBox FontSize="20" IsReadOnly="True" Name="FEV1BOX" />
+                                    <TextBox FontSize="20" IsReadOnly="True" Name="FEV3BOX" />
+                                </StackPanel>
+                                <StackPanel Grid.Row="0" Grid.Column="1">
+                                    <TextBox FontSize="20" IsReadOnly="True" Name="PEFBOX"/>
+                                    <TextBox FontSize="20" IsReadOnly="True" Name="PIFBOX"/>
+                                </StackPanel>
+                                <StackPanel Grid.Row="1" Grid.Column="0">
+                                    <TextBox FontSize="20" IsReadOnly="True" Name="FEF25BOX" />
+                                    <TextBox FontSize="20" IsReadOnly="True" Name="FEF50BOX" />
+                                    <TextBox FontSize="20" IsReadOnly="True" Name="FEF75BOX"/>
+                                </StackPanel>
+                                <StackPanel Grid.Row="1" Grid.Column="1">
+                                    <TextBox FontSize="20" IsReadOnly="True" Name="FIF25BOX"/>
+                                    <TextBox FontSize="20" IsReadOnly="True" Name="FIF50BOX"/>
+                                    <TextBox FontSize="20" IsReadOnly="True" Name="FIF75BOX"/>
+                                </StackPanel>
+                                <StackPanel Grid.Row="2" Grid.Column="0">
+                                    <TextBox FontSize="20" IsReadOnly="True" Name="MEF25_75BOX"/>
+                                </StackPanel>
+                                <StackPanel Grid.Row="2" Grid.Column="1">
+                                    <TextBox FontSize="20" IsReadOnly="True" Name="VTBOX"/>
+                                </StackPanel>
+                            </Grid>
+                        </TabItem>
+                        <TabItem Header="Test" >
+
+                        </TabItem>
+                    </TabControl>
+                </WrapPanel>
+            </ScrollViewer>
+        </TabItem>
+        <TabItem Header="Step_3_Calculations">
+            <ScrollViewer>
+                <StackPanel>
+                    <StackPanel >
+                        <WindowsFormsHost Grid.Column="2"  >
+                            <dvc:Chart x:Name="ExampleCO2_VD" Height="300" Width="1500" />
+                        </WindowsFormsHost>
+                        <Button 
+                    Content="Подсчет"
+                    Click="V_Start_Test" 
+                        />
+                        <WindowsFormsHost Grid.Column="2"  >
+                            <dvc:Chart x:Name="Test" Height="800" Width="1500" />
+                        </WindowsFormsHost>
+                        <DataGrid ItemsSource="{Binding Calculations_TF}" AutoGenerateColumns="False" x:Name="TF" >
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Текущее Время" Binding="{Binding  _T,StringFormat='Время : {0}'}" />
+                                <DataGridTextColumn Header="Статус" Binding="{Binding  _Status,StringFormat='Этап : {0}'}" />
+                                <DataGridTextColumn Header="Мгновенное &#10;значение V(t) &#10;[Л/С]" Binding="{Binding  _DataFlow}" />
+                                <DataGridTextColumn Header="Мгновенное &#10;предыдущие &#10;значение V(t) &#10;[Л/С]" Binding="{Binding  _kDataFlow}" />
+                                <DataGridTextColumn Header="Flowins" Binding="{Binding _Flowins}" />
+                                <DataGridTextColumn Header="Flowexp" Binding="{Binding _Flowexp}" />
+                                <DataGridTextColumn Header="O2ins" Binding="{Binding _O2ins}" />
+                                <DataGridTextColumn Header="O2exp" Binding="{Binding _O2exp}" />
+                                <DataGridTextColumn Header="VO2ins" Binding="{Binding _VO2ins}" />
+                                <DataGridTextColumn Header="VO2exp" Binding="{Binding _VO2exp}" />
+                                <DataGridTextColumn Header="CO2ins" Binding="{Binding _CO2ins}" />
+                                <DataGridTextColumn Header="CO2exp" Binding="{Binding _CO2exp}" />
+                                <DataGridTextColumn Header="VCO2ins" Binding="{Binding _VCO2ins}" />
+                                <DataGridTextColumn Header="VCO2exp" Binding="{Binding _VCO2exp}" />
+                                <DataGridTextColumn Header="dCO2" Binding="{Binding _dCO2}" />
+                                <DataGridTextColumn Header="FETCO2 [Vol.%]" Binding="{Binding _FETCO2}" />
+                                <DataGridTextColumn Header="FITCO2 [Vol.%]" Binding="{Binding _FITCO2}" />
+                                <DataGridTextColumn Header="dO2" Binding="{Binding _dO2}" />
+                                <DataGridTextColumn Header="FETO2 [Vol.%]" Binding="{Binding _FETO2}" />
+                                <DataGridTextColumn Header="FITO2 [Vol.%]" Binding="{Binding _FITO2}" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <DataGrid ItemsSource="{Binding Calculations_T}" AutoGenerateColumns="False" x:Name="T" >
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Время" Binding="{Binding  _T2,StringFormat='Время: {0}'}" />
+                                <DataGridTextColumn Header="Цикл дыхания" Binding="{Binding  _bN}" />
+                                <DataGridTextColumn Header="VT [Л]" Binding="{Binding _VT}" />
+                                <DataGridTextColumn Header="VE [Л/Мин]" Binding="{Binding _VE}" />
+                                <DataGridTextColumn Header="VO2 [Л/Мин]" Binding="{Binding _VO2}" />
+                                <DataGridTextColumn Header="VO2_s [Л/Мин]" Binding="{Binding _VO2_s}" />
+                                <DataGridTextColumn Header="VO2_HT [Л/Мин]" Binding="{Binding _VO2_HT}" />
+                                <DataGridTextColumn Header="VO2_ET [Л/Мин]" Binding="{Binding _VO2_ET}" />
+                                <DataGridTextColumn Header="VCO2 [Л/Мин]" Binding="{Binding _VCO2}" />
+                                <DataGridTextColumn Header="VCO2_s [Л/Мин]" Binding="{Binding _VCO2_s}" />
+                                <DataGridTextColumn Header="VCO2_HT [Л/Мин]" Binding="{Binding _VCO2_HT}" />
+                                <DataGridTextColumn Header="VCO2_ET [Л/Мин]" Binding="{Binding _VCO2_ET}" />
+                                <DataGridTextColumn Header="FETO2 [Vol.%]" Binding="{Binding _FETO2}" />
+                                <DataGridTextColumn Header="FETCO2 [Vol.%]" Binding="{Binding _FETCO2}" />
+                                <DataGridTextColumn Header="BF [Дых/Мин]" Binding="{Binding _BF}" />
+                                <DataGridTextColumn Header="RER" Binding="{Binding _RER}" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical" Grid.Column="0" Cursor="Hand"  >
+                        <TextBlock
+                       Foreground="Red"
+                       FontStyle="Italic"
+                       FontFamily="TimesNewRoman"
+                       FontSize="20"
+                       Text="Стартуем"
+                       Margin="0,10,0,0"
+                       HorizontalAlignment="Center"
+                        />
+                        <WindowsFormsHost   >
+                            <dvc:Chart x:Name="Test_FlowVolumeLoop" Height="500" Width="500"  />
+                        </WindowsFormsHost>
+                    </StackPanel>
+                </StackPanel>
+            </ScrollViewer>
+        </TabItem>
+        <TabItem Header="Step_4_Calculations">
+            <ScrollViewer>
+                <ScrollViewer>
+                    <WrapPanel>
+                        <StackPanel>
+                            <TextBlock
+                               Foreground="Black"
+                               FontStyle="Italic"
+                               FontFamily="TimesNewRoman"
+                               FontSize="20"
+                               Text="VO2 vs VCO2"
+                               Margin="0,10,0,0"
+                               HorizontalAlignment="Center"
+                                />
+                            <WindowsFormsHost   >
+                                <dvc:Chart x:Name="Test_VO2_VCO2" Height="500" Width="500"  />
+                            </WindowsFormsHost>
+                        </StackPanel>
+                        <StackPanel>
+                            <TextBlock
+                               Foreground="Black"
+                               FontStyle="Italic"
+                               FontFamily="TimesNewRoman"
+                               FontSize="20"
+                               Text="EQO2 vs EQCO2"
+                               Margin="0,10,0,0"
+                               HorizontalAlignment="Center"
+                                />
+                            <WindowsFormsHost   >
+                                <dvc:Chart x:Name="Test_EQO2_EQCO2" Height="500" Width="500"  />
+                            </WindowsFormsHost>
+                        </StackPanel>
+                        <!--<StackPanel>
+                            <TextBlock
+                               Foreground="Black"
+                               FontStyle="Italic"
+                               FontFamily="TimesNewRoman"
+                               FontSize="20"
+                               Text="LOOP : Flow - Volume"
+                               Margin="0,10,0,0"
+                               HorizontalAlignment="Center"
+                                />-->
+                        <!--<WindowsFormsHost   >
+                                <dvc:Chart x:Name="Test_FlowVolumeLoop" Height="500" Width="500"  />
+                            </WindowsFormsHost>-->
+                        <!--</StackPanel>-->
+                        <StackPanel>
+                            <TextBlock
+                               Foreground="Black"
+                               FontStyle="Italic"
+                               FontFamily="TimesNewRoman"
+                               FontSize="20"
+                               Text="VE"
+                               Margin="0,10,0,0"
+                               HorizontalAlignment="Center"
+                                />
+                            <WindowsFormsHost   >
+                                <dvc:Chart x:Name="Test_VE_W" Height="500" Width="500"  />
+                            </WindowsFormsHost>
+                        </StackPanel>
+                        <StackPanel>
+                            <TextBlock
+                               Foreground="Black"
+                               FontStyle="Italic"
+                               FontFamily="TimesNewRoman"
+                               FontSize="20"
+                               Text="FETO2 vs FETCO2"
+                               Margin="0,10,0,0"
+                               HorizontalAlignment="Center"
+                                />
+                            <WindowsFormsHost   >
+                                <dvc:Chart x:Name="Test_FETO2_FETCO2" Height="500" Width="500"  />
+                            </WindowsFormsHost>
+                        </StackPanel>
+
+                    </WrapPanel>
+                </ScrollViewer>
+            </ScrollViewer>
+        </TabItem>
+        <TabItem Header="Step_5_Calculations">
+            <TabControl>
+                <TabItem Header="Вычисления для по газу" IsSelected="True" >
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="400"/>
+                            <ColumnDefinition Width="400"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock
+                                Grid.ColumnSpan="2"
+                                Grid.Row="0"
+                               Foreground="Black"
+                               FontStyle="Italic"
+                               FontFamily="TimesNewRoman"
+                               FontSize="20"
+                               Text="Calculations"
+                               Margin="0,10,0,0"
+                               HorizontalAlignment="Center"
+                                />
+                        <StackPanel Grid.Row="1" Grid.Column="0">
+                            <TextBox FontSize="20" IsReadOnly="True" Name="Test_VEBOX"  />
+                            <TextBox FontSize="20" IsReadOnly="True" Name="Test_VABOX" />
+                            <TextBox FontSize="20" IsReadOnly="True" Name="Test_VDBOX" />
+                            <TextBox FontSize="20" IsReadOnly="True" Name="Test_VO2BOX" />
+                            <TextBox FontSize="20" IsReadOnly="True" Name="Test_VCO2BOX" />
+                            <TextBox FontSize="20" IsReadOnly="True" Name="Test_VO2_HTBOX" />
+                            <TextBox FontSize="20" IsReadOnly="True" Name="Test_VCO2_HTBOX" />
+                            <TextBox FontSize="20" IsReadOnly="True" Name="Test_VO2_ETBOX" />
+                            <TextBox FontSize="20" IsReadOnly="True" Name="Test_VCO2_ETBOX" />
+                            <!--<TextBox FontSize="20" IsReadOnly="True" Name="Test_VO2predBOX" />-->
+                        </StackPanel>
+                        <StackPanel Grid.Row="1" Grid.Column="1">
+                            <TextBox FontSize="20" IsReadOnly="True" Name="Test_FETO2BOX"/>
+                            <TextBox FontSize="20" IsReadOnly="True" Name="Test_FETCO2BOX"/>
+                            <TextBox FontSize="20" IsReadOnly="True" Name="Test_FITO2BOX"/>
+                            <TextBox FontSize="20" IsReadOnly="True" Name="Test_FITCO2BOX"/>
+                            <TextBox FontSize="20" IsReadOnly="True" Name="Test_PAO2BOX"/>
+                            <TextBox FontSize="20" IsReadOnly="True" Name="Test_PACO2BOX"/>
+                            <!--<TextBox FontSize="20" IsReadOnly="True" Name="Test_PaO2BOX"/>-->
+                            <TextBox FontSize="20" IsReadOnly="True" Name="Test_PaCO2BOX"/>
+                            <TextBox FontSize="20" IsReadOnly="True" Name="Test_PECO2BOX"/>
+                            <!--<TextBox FontSize="20" IsReadOnly="True" Name="Test_Aa_DO2BOX"/>-->
+                            <!--<TextBox FontSize="20" IsReadOnly="True" Name="Test_aET_DCO2BOX"/>-->
+                            <!--<TextBox FontSize="20" IsReadOnly="True" Name="Test_DLO2BOX"/>-->
+                        </StackPanel>
+                        <StackPanel Grid.Row="2" Grid.Column="0">
+                            <TextBox FontSize="20" IsReadOnly="True" Name="Test_RERBOX" />
+                            <TextBox FontSize="20" IsReadOnly="True" Name="Test_EQO2BOX" />
+                            <TextBox FontSize="20" IsReadOnly="True" Name="Test_EQCO2BOX"/>
+                            <TextBox FontSize="20" IsReadOnly="True" Name="Test_METSBOX"/>
+                        </StackPanel>
+                        <StackPanel Grid.Row="2" Grid.Column="1">
+                            <TextBox FontSize="20" IsReadOnly="True" Name="Test_BRBOX"/>
+                            <TextBox FontSize="20" IsReadOnly="True" Name="Test_TimeBOX"/>
+                        </StackPanel>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Спирометрические вычисления" >
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="400"/>
+                            <ColumnDefinition Width="400"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock
+                                Grid.ColumnSpan="2"
+                                Grid.Row="0"
+                               Foreground="Black"
+                               FontStyle="Italic"
+                               FontFamily="TimesNewRoman"
+                               FontSize="20"
+                               Text="Calculations"
+                               Margin="0,10,0,0"
+                               HorizontalAlignment="Center"
+                                />
+                        <StackPanel Grid.Row="0" Grid.Column="0">
+                            <TextBox FontSize="20" IsReadOnly="True" Name="Test_FEV05BOX" />
+                            <TextBox FontSize="20" IsReadOnly="True" Name="Test_FEV1BOX" />
+                            <TextBox FontSize="20" IsReadOnly="True" Name="Test_FEV3BOX" />
+                        </StackPanel>
+                        <StackPanel Grid.Row="0" Grid.Column="1">
+                            <TextBox FontSize="20" IsReadOnly="True" Name="Test_PEFBOX"/>
+                            <TextBox FontSize="20" IsReadOnly="True" Name="Test_PIFBOX"/>
+                        </StackPanel>
+                        <StackPanel Grid.Row="1" Grid.Column="0">
+                            <TextBox FontSize="20" IsReadOnly="True" Name="Test_FEF25BOX" />
+                            <TextBox FontSize="20" IsReadOnly="True" Name="Test_FEF50BOX" />
+                            <TextBox FontSize="20" IsReadOnly="True" Name="Test_FEF75BOX"/>
+                        </StackPanel>
+                        <StackPanel Grid.Row="1" Grid.Column="1">
+                            <TextBox FontSize="20" IsReadOnly="True" Name="Test_FIF25BOX"/>
+                            <TextBox FontSize="20" IsReadOnly="True" Name="Test_FIF50BOX"/>
+                            <TextBox FontSize="20" IsReadOnly="True" Name="Test_FIF75BOX"/>
+                        </StackPanel>
+                        <StackPanel Grid.Row="2" Grid.Column="0">
+                            <TextBox FontSize="20" IsReadOnly="True" Name="Test_MEF25_75BOX"/>
+                        </StackPanel>
+                        <StackPanel Grid.Row="2" Grid.Column="1">
+                            <TextBox FontSize="20" IsReadOnly="True" Name="Test_VTBOX"/>
+                        </StackPanel>
+                    </Grid>
+                </TabItem>
+            </TabControl>
+        </TabItem>
+    </TabControl>
+
+</Window>
